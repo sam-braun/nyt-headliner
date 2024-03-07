@@ -30,7 +30,7 @@
                 <ul class="list-unstyled">
                     {% for keyword in item.keywords %}
                     <li>
-                        <div>{{ keyword }}</div>
+                    <li><a href="/search_link/{{ keyword }}">{{ keyword }}</a></li>
                     </li>
                     {% endfor %}
                 </ul>

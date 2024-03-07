@@ -5,9 +5,9 @@ body {
 }
 
 .title {
-  font-size: 35px;
+  font-size: 45px;
   font-weight: bold;
-  margin-bottom: 25px;
+  margin-bottom: 15px;
   margin-top: 25px;
   text-align: center;
   font-family: "Chomsky", sans-serif;
@@ -53,6 +53,10 @@ body {
 
 .ui-draggable-dragging {
   cursor: move !important;
+}
+
+#navbary {
+  background-color: rgb(45, 45, 45);
 }
 
 .warning {
