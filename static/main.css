@@ -4,6 +4,28 @@ body {
   font-size: 13px;
 }
 
+.navbar {
+  background-color: rgb(45, 45, 45) !important; /* Bootstrap's dark grey */
+}
+
+.navbar .form-inline {
+  align-items: center;
+}
+
+#navbarNav {
+  display: flex;
+  align-items: center;
+}
+
+.footer {
+  background-color: rgb(45, 45, 45) !important;
+  height: 20px;
+  color: white;
+  font-size: 10px;
+  align-items: center;
+  padding-top: 2px;
+}
+
 .title {
   font-size: 45px;
   font-weight: bold;
@@ -53,10 +75,6 @@ body {
 
 .ui-draggable-dragging {
   cursor: move !important;
-}
-
-#navbary {
-  background-color: rgb(45, 45, 45);
 }
 
 .warning {
