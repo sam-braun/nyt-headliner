@@ -1,6 +1,7 @@
 # Samuel Braun slb2250
 
 import requests
+import datetime
 
 
 def format_article_data(article_data):
@@ -8,12 +9,13 @@ def format_article_data(article_data):
     id = 0
 
     for article in article_data:
-        image_url = ''
-        image_caption = ''
+        image_url, image_caption = '', ''
         if article['media']:
             first_media_item = article['media'][0]['media-metadata'][2]
             image_url = first_media_item.get('url', '')
             image_caption = article['media'][0].get('caption', '')
+
+        # published_date = datetime.strptime(article['published_date'], "%Y-%m-%d").strftime("%B %d, %Y")
 
         formatted_article = {
             'id': id,
