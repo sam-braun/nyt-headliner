@@ -4,18 +4,34 @@ import requests
 import datetime
 
 
+def process_keywords(keyword_string):
+    if keyword_string:
+        keywords = keyword_string.split(';')
+        for kw in keywords:
+            if ', ' in kw:
+                keywords.remove(kw)
+                name = kw.split(', ')
+                correct_name = f"{name[1]} {name[0]}"
+                keywords.append(correct_name)
+
+        return keywords
+
+
 def format_article_data(article_data):
     formatted_data, all_keywords = [], []
     id = 0
 
     for article in article_data:
         image_url, image_caption = '', ''
+
         if article['media']:
             first_media_item = article['media'][0]['media-metadata'][2]
             image_url = first_media_item.get('url', '')
             image_caption = article['media'][0].get('caption', '')
 
         # published_date = datetime.strptime(article['published_date'], "%Y-%m-%d").strftime("%B %d, %Y")
+
+        keywords = process_keywords(article['adx_keywords'])
 
         formatted_article = {
             'id': id,
@@ -30,7 +46,7 @@ def format_article_data(article_data):
             'abstract': article['abstract'],
             'image': image_url,
             'image_caption': image_caption,
-            'keywords': article['adx_keywords'].split(';')
+            'keywords': keywords
         }
 
         formatted_data.append(formatted_article)
