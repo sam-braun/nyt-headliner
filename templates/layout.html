@@ -39,15 +39,13 @@
 
                 <script>
                     $(document).ready(function () {
-                        // Listen for form submission
                         $('#searchForm').on('submit', function (e) {
-                            var searchQuery = $('#searchInput').val().trim(); // Trim whitespace from the input value
+                            var searchQuery = $('#searchInput').val().trim();
 
-                            // Check if the query is empty after trimming whitespace
                             if (!searchQuery) {
-                                e.preventDefault(); // Prevent form submission
-                                $('#searchInput').val(''); // Clear the input field
-                                $('#searchInput').focus(); // Retain focus on the input field
+                                e.preventDefault();
+                                $('#searchInput').val('');
+                                $('#searchInput').focus();
                             }
                         });
                     });

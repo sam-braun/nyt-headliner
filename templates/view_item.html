@@ -6,18 +6,32 @@
 
 <div class="container">
     <div class="row">
-        <!-- <div class="col-lg-6 mb-4">
+        <div class="col-lg-6 mb-4">
             <img src="{{ item.image }}" class="img-fluid rounded" alt="{{ item.title }}">
-        </div> -->
+            {% if item.image_caption %}
+            <h6>{{ item.image_caption }}</h6>
+            {% endif %}
+        </div>
         <div class="col-lg-6">
             <h2>{{ item.title }}</h2>
-            <h4>{{ item.abstract }}</h4>
+            <h5>{{ item.abstract }}</h5>
+            <div>{{ item.byline }}</div>
+            <div>Published: {{ item.published_date }}</div>
+            <div>Updated: {{ item.update_date }}</div>
+            {% if item.subsection %}
+            <div>section: {{ item.section }} > {{ item.subsection }}</div>
+            {% else %}
+            <div>Section: {{ item.section }}</div>
+            {% endif %}
+            <div>URL: {{ item.url }}</div>
 
             <div>
                 <h4>Keywords</h4>
                 <ul class="list-unstyled">
-                    {% for kw in item.keywords %}
-                    <li>{{ ky }}</li>
+                    {% for keyword in item.keywords %}
+                    <li>
+                        <div>{{ keyword }}</div>
+                    </li>
                     {% endfor %}
                 </ul>
             </div>

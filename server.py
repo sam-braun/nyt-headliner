@@ -41,18 +41,25 @@ def search_results():
         keyword_article_matches = [
             elem for elem in data if any(
                 kw in elem['keywords'] for kw in keyword_matches)]
+        section_matches = [elem for elem in data if cleaned_query in elem['section'].lower() or cleaned_query in elem['subsection'].lower()]
 
         print(f"Title matches: {title_matches}")
         print(f"Abstract matches: {abstract_matches}")
         print(f"Keyword matches: {keyword_article_matches}")
 
-    return render_template('search_results.html', t_matches=title_matches, a_matches=abstract_matches, kw_matches=keyword_article_matches, query=query)
+    return render_template('search_results.html', t_matches=title_matches, a_matches=abstract_matches, kw_matches=keyword_article_matches, s_mateches=section_matches, query=query)
 
 
 @app.route('/view/<id>')
 def item(id):
-    item = next((item for item in data if item['id'] == id), None)
+    try:
+        item_id = int(id)
+    except ValueError:
+        return "Invalid Item ID", 400
+
+    item = next((item for item in data if item['id'] == item_id), None)
     if item:
+        print(item)
         return render_template('view_item.html', item=item)
     else:
         return "Item not found", 404

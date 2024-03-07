@@ -16,6 +16,8 @@ def format_article_data(article_data):
         formatted_article = {
             'id': id,
             'url': article['url'],
+            "published_date": article['published_date'],
+            "update_date": article['updated'],
             'section': article['section'],
             'subsection': article['subsection'],
             'adx_keywords': article['adx_keywords'],

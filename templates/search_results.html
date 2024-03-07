@@ -37,4 +37,15 @@
 <p>No results found</p>
 {% endif %}
 
+<h2>Showing Results in Sections for "{{ query }}"</h2>
+{% if s_matches %}
+<ul>
+    {% for item in s_matches %}
+    <li><a href="/view/{{ item.id }}">{{ item.title }}</a></li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No results found</p>
+{% endif %}
+
 {% endblock %}
