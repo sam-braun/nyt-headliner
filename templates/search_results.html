@@ -1,0 +1,40 @@
+<!-- Samuel Braun slb2250 -->
+
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h2>Showing Results in Titles for "{{ query }}"</h2>
+{% if t_matches %}
+<ul>
+    {% for item in t_matches %}
+    <li><a href="/view/{{ item.id }}">{{ item.title }}</a></li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No results found</p>
+{% endif %}
+
+<h2>Showing Results in Abstracts for "{{ query }}"</h2>
+{% if a_matches %}
+<ul>
+    {% for item in a_matches %}
+    <li><a href="/view/{{ item.id }}">{{ item.title }}</a></li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No results found</p>
+{% endif %}
+
+<h2>Showing Results in Keywords for "{{ query }}"</h2>
+{% if kw_matches %}
+<ul>
+    {% for item in kw_matches %}
+    <li><a href="/view/{{ item.id }}">{{ item.title }}</a></li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No results found</p>
+{% endif %}
+
+{% endblock %}

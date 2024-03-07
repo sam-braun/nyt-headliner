@@ -1,0 +1,39 @@
+<!-- Samuel Braun slb2250 -->
+
+{% extends "layout.html" %}
+
+{% block content %}
+<!-- Page Content -->
+<div class="container mt-4">
+    <h3 class="text-center">Popular Propaganda Artifacts</h3>
+    <div id="items-container" class="row">
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        fetch('/api/featured_items')
+            .then(response => response.json())
+            .then(data => {
+                const itemsContainer = document.querySelector('#items-container');
+                const ul = document.createElement('ul');
+                ul.className = 'list-unstyled';
+
+                data.forEach(item => {
+                    const li = document.createElement('li');
+                    const itemLink = document.createElement('a');
+                    itemLink.href = `/view/${item.id}`;
+                    itemLink.innerText = item.title;
+                    li.appendChild(itemLink);
+                    ul.appendChild(li);
+                });
+
+                itemsContainer.innerHTML = '';
+                itemsContainer.appendChild(ul);
+            })
+            .catch(error => console.error('Error loading featured items:', error));
+    });
+</script>
+
+
+{% endblock %}

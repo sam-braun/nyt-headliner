@@ -1,0 +1,28 @@
+<!-- Samuel Braun slb2250 -->
+
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <!-- <div class="col-lg-6 mb-4">
+            <img src="{{ item.image }}" class="img-fluid rounded" alt="{{ item.title }}">
+        </div> -->
+        <div class="col-lg-6">
+            <h2>{{ item.title }}</h2>
+            <h4>{{ item.abstract }}</h4>
+
+            <div>
+                <h4>Keywords</h4>
+                <ul class="list-unstyled">
+                    {% for kw in item.keywords %}
+                    <li>{{ ky }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
