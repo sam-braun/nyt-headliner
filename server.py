@@ -15,6 +15,28 @@ def get_nyt_data():
     data, all_keywords = nyt.get_nyt_data(request_url)
 
 
+def get_matches(query):
+    if query:
+        cleaned_query = query.lower().strip()
+        title_matches = [
+            elem for elem in data if cleaned_query in elem['title'].lower()]
+        abstract_matches = [
+            elem for elem in data if cleaned_query in elem['abstract'].lower()]
+        keyword_matches = [
+            kw for kw in all_keywords if cleaned_query in kw.lower()]
+        keyword_article_matches = [
+            elem for elem in data if any(
+                kw in elem['keywords'] for kw in keyword_matches)]
+        section_matches = [elem for elem in data if cleaned_query in elem['section'].lower(
+        ) or cleaned_query in elem['subsection'].lower()]
+
+        print(f"Title matches: {title_matches}")
+        print(f"Abstract matches: {abstract_matches}")
+        print(f"Keyword matches: {keyword_article_matches}")
+
+    return title_matches, abstract_matches, keyword_matches, section_matches
+
+
 @app.route('/')
 def homepage():
     return render_template('homepage.html')
@@ -29,48 +51,16 @@ def featured_items():
 @app.route('/search', methods=['GET'])
 def search_results():
     query = request.args.get('query', '')
-    # matches = []
-    if query:
-        cleaned_query = query.lower().strip()
-        title_matches = [
-            elem for elem in data if cleaned_query in elem['title'].lower()]
-        abstract_matches = [
-            elem for elem in data if cleaned_query in elem['abstract'].lower()]
-        keyword_matches = [
-            kw for kw in all_keywords if cleaned_query in kw.lower()]
-        keyword_article_matches = [
-            elem for elem in data if any(
-                kw in elem['keywords'] for kw in keyword_matches)]
-        section_matches = [elem for elem in data if cleaned_query in elem['section'].lower(
-        ) or cleaned_query in elem['subsection'].lower()]
-
-        print(f"Title matches: {title_matches}")
-        print(f"Abstract matches: {abstract_matches}")
-        print(f"Keyword matches: {keyword_article_matches}")
+    title_matches, abstract_matches, keyword_article_matches, section_matches = get_matches(
+        query)
 
     return render_template('search_results.html', t_matches=title_matches, a_matches=abstract_matches, kw_matches=keyword_article_matches, s_mateches=section_matches, query=query)
 
 
 @app.route('/search_link/<query>', methods=['GET'])
 def search_results_link(query):
-    # matches = []
-    if query:
-        cleaned_query = query.lower().strip()
-        title_matches = [
-            elem for elem in data if cleaned_query in elem['title'].lower()]
-        abstract_matches = [
-            elem for elem in data if cleaned_query in elem['abstract'].lower()]
-        keyword_matches = [
-            kw for kw in all_keywords if cleaned_query in kw.lower()]
-        keyword_article_matches = [
-            elem for elem in data if any(
-                kw in elem['keywords'] for kw in keyword_matches)]
-        section_matches = [elem for elem in data if cleaned_query in elem['section'].lower(
-        ) or cleaned_query in elem['subsection'].lower()]
-
-        print(f"Title matches: {title_matches}")
-        print(f"Abstract matches: {abstract_matches}")
-        print(f"Keyword matches: {keyword_article_matches}")
+    title_matches, abstract_matches, keyword_article_matches, section_matches = get_matches(
+        query)
 
     return render_template('search_results.html', t_matches=title_matches, a_matches=abstract_matches, kw_matches=keyword_article_matches, s_mateches=section_matches, query=query)
 
