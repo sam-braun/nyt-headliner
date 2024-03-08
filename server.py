@@ -34,7 +34,7 @@ def get_matches(query):
         print(f"Abstract matches: {abstract_matches}")
         print(f"Keyword matches: {keyword_article_matches}")
 
-    return title_matches, abstract_matches, keyword_matches, section_matches
+    return title_matches, abstract_matches, keyword_article_matches, section_matches
 
 
 @app.route('/')
@@ -51,18 +51,16 @@ def featured_items():
 @app.route('/search', methods=['GET'])
 def search_results():
     query = request.args.get('query', '')
-    title_matches, abstract_matches, keyword_article_matches, section_matches = get_matches(
-        query)
+    t_m, a_m, kwa_m, s_m = get_matches(query)
 
-    return render_template('search_results.html', t_matches=title_matches, a_matches=abstract_matches, kw_matches=keyword_article_matches, s_mateches=section_matches, query=query)
+    return render_template('search_results.html', t_matches=t_m, a_matches=a_m, kw_matches=kwa_m, s_mateches=s_m, query=query)
 
 
 @app.route('/search_link/<query>', methods=['GET'])
 def search_results_link(query):
-    title_matches, abstract_matches, keyword_article_matches, section_matches = get_matches(
-        query)
+    t_m, a_m, kwa_m, s_m = get_matches(query)
 
-    return render_template('search_results.html', t_matches=title_matches, a_matches=abstract_matches, kw_matches=keyword_article_matches, s_mateches=section_matches, query=query)
+    return render_template('search_results.html', t_matches=t_m, a_matches=a_m, kw_matches=kwa_m, s_mateches=s_m, query=query)
 
 
 @app.route('/view/<id>')
