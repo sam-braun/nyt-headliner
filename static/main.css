@@ -168,3 +168,86 @@ body {
   text-align: center;
   width: 50%;
 }
+
+.card-custom {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  border-radius: 5px;
+  /* 5px rounded corners */
+}
+
+.card-custom:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.card-header-custom {
+  background-color: #007bff;
+  /* Bootstrap primary color */
+  color: white;
+  padding: 16px;
+  font-size: 20px;
+}
+
+.card-body-custom {
+  padding: 16px;
+}
+
+.rounded-img {
+  border-radius: 5px;
+}
+
+.btn-custom {
+  background-color: #007bff;
+  /* Bootstrap primary color */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+
+.btn-custom:hover {
+  background-color: white;
+  color: black;
+  border: 1px solid #007bff;
+}
+
+.keyword-list {
+  padding: 0;
+}
+
+.keyword-list li {
+  display: inline;
+  /* Make keywords inline */
+  margin-right: 10px;
+}
+
+.image-caption-container {
+  display: block;
+  position: relative;
+  /* width: 30%; */
+  border-top-left-radius: 8px; /* Adjust as needed */
+}
+
+.cropped-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover; /* This will crop the image to fill the container */
+  border-top-left-radius: 8px; /* Rounded top-left corner */
+  border-top-right-radius: 8px; /* Optional: if you want the top-right corner also rounded */
+}
+
+.caption-box {
+  background-color: #007bff; /* Bootstrap primary color */
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
