@@ -41,7 +41,7 @@ function setPredominantBackgroundColor(imageElement, containerElement) {
         var g = new_color.g;
         var b = new_color.b;
         var yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
-        containerElement.style.color = rgb(yiq, yiq, yiq);
+        // containerElement.style.color = rgb(yiq, yiq, yiq);
     };
 
     // Handle CORS security if the images are not served from the same domain
@@ -49,4 +49,23 @@ function setPredominantBackgroundColor(imageElement, containerElement) {
 
     // Start loading the image
     img.src = imageElement.src;
+
+    // const rgbValues = predominantColor.color.split(',').map(Number);
+    // const contrastColor = getContrastYIQ({ r: rgbValues[0], g: rgbValues[1], b: rgbValues[2] });
+    // containerElement.style.color = contrastColor;
+
+    const [r, g, b] = predominantColor.split(',').map(c => parseInt(c));
+    const contrastColor = getContrastYIQ({r, g, b});
+
+    return contrastColor.color;
+
+
+
+
+
+}
+
+function getContrastYIQ(rgb) {
+    const yiq = ((rgb.r * 299) + (rgb.g * 587) + (rgb.b * 114)) / 1000;
+    return (yiq >= 128) ? 'black' : 'white';
 }

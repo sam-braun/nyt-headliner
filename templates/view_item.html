@@ -1,5 +1,3 @@
-<!-- Samuel Braun slb2250 -->
-
 {% extends "layout.html" %}
 
 {% block content %}
@@ -11,6 +9,12 @@
         transition: 0.3s;
         border-radius: 5px;
         /* 5px rounded corners */
+        display: flex;
+        /* Display as flex to put image and info side by side */
+        flex-wrap: wrap;
+        /* Allow wrapping for responsiveness */
+        align-items: stretch;
+        /* Stretch items to match heights */
     }
 
     .card-custom:hover {
@@ -23,18 +27,55 @@
         color: white;
         padding: 16px;
         font-size: 20px;
+        width: 100%;
+        /* Ensure header takes full width */
     }
 
     .card-body-custom {
         padding: 16px;
+        display: flex;
+        flex-direction: column;
+        /* Stack content vertically */
+        flex-grow: 1;
+    }
+
+    .img-container {
+        flex-basis: 50%;
+        /* Give image box equal width */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        /* Center the image */
+        overflow: hidden;
+        /* Hide excess image */
     }
 
     .rounded-img {
-        border-radius: 5px;
+        width: 100%;
+        /* Cover the full width of its container */
+        height: 100%;
+        /* Stretch to the full height of its container */
+        object-fit: cover;
+        /* Cover the area without losing aspect ratio */
+        border-radius: 10px !important;
+        padding: 10px;
+    }
+
+    #rounded {
+        border-radius: 10px !important;
+    }
+
+
+    .info-container {
+        flex-basis: 50%;
+        /* Give info box equal width */
+        display: flex;
+        flex-direction: column;
+        padding: 16px;
     }
 
     .btn-custom {
-        background-color: #007bff;
+        background-color: #ffa500;
         /* Bootstrap primary color */
         color: white;
         padding: 10px 20px;
@@ -64,24 +105,64 @@
         /* Make keywords inline */
         margin-right: 10px;
     }
+
+    .btn-read {
+        flex-basis: 75%;
+        /* Make Read Full Article button larger */
+    }
+
+    .btn-edit {
+        flex-basis: 25%;
+        /* Make Edit button smaller */
+    }
+
+    .btn-custom:hover {
+        background-color: white;
+        color: black;
+        border: 1px solid #007bff;
+    }
+
+    .buttons-container {
+        display: flex;
+        /* Enable flexbox for button container */
+        justify-content: start;
+        /* Align items to the start */
+        gap: 10px;
+        /* Add some space between the buttons */
+        margin-top: auto;
+        /* Optional: Push the buttons to the bottom of the card */
+        width: 50%;
+        /* Make the button container take up half the length of the box */
+    }
+
+    .btn-custom {
+        flex-grow: 1;
+        /* Enable buttons to grow */
+        text-align: center;
+        /* Center button text */
+        /* Remove specific padding and margin styles if they conflict with the flex layout */
+    }
+
+    .btn-read-full-article {
+        flex-grow: 3;
+        /* Make 'Read Full Article' button three times as long as the 'Edit' button */
+    }
+
+    .btn-edit {
+        /* The 'Edit' button will naturally be smaller due to the 'flex-grow: 1' from .btn-custom */
+    }
 </style>
 
 <div class="container">
-    <!-- Row for Image and Main Information -->
     <div class="row">
-        <!-- Column for Article Image and Caption -->
-        <div class="col-lg-6 mb-4 d-flex flex-column">
-            <div class="card-custom flex-grow-1 d-flex flex-column">
-                <!-- Use 'flex-grow-1' to make the image fill the flex container -->
-
-                <img src="{{ item.image }}" class="img-fluid rounded-img flex-grow-1" alt="{{ item.title }}"
-                    style="object-fit: cover;">
-            </div>
-        </div>
-        <!-- Column for Article Details -->
-        <div class="col-lg-6 mb-4 d-flex">
-            <div class="card-custom flex-grow-1">
-                <div class="card-body-custom d-flex flex-column">
+        <div class="col-12 mb-4">
+            <div class="card-custom">
+                <!-- Image Container -->
+                <div class="img-container">
+                    <img src="{{ item.image }}" id="rounded" class="img-fluid rounded-img" alt="{{ item.title }}">
+                </div>
+                <!-- Info Container -->
+                <div class="info-container card-body-custom">
                     <h2>{{ item.title }}</h2>
                     <p>{{ item.abstract }}</p>
                     <div>By {{ item.author }}</div>
@@ -92,14 +173,17 @@
                     {% else %}
                     <div>Section: {{ item.section }}</div>
                     {% endif %}
-                    <a href="{{ item.url }}" class="btn-custom mt-auto">Read Full Article</a>
-                    <!-- Add this line for the Edit button -->
-                    <a href="{{ url_for('edit_item', id=item['id']) }}" class="btn-custom mt-auto">Edit</a>
+                    <!-- Inside your .info-container where the buttons are located -->
+                    <div class="buttons-container">
+                        <a href="{{ item.url }}" class="btn-custom btn-read-full-article">Read Full Article</a>
+                        <a href="{{ url_for('edit_item', id=item['id']) }}" class="btn-custom btn-edit">Edit</a>
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
-    <!-- Row for Keywords -->
+    <!-- Row for Keywords (remains unchanged) -->
     <div class="row">
         <div class="col-12">
             <div class="card-custom">
@@ -115,9 +199,5 @@
         </div>
     </div>
 </div>
-
-
-<!-- Link to Bootstrap JS -->
-<!-- <script src="path/to/bootstrap.bundle.min.js"></script> -->
 
 {% endblock %}

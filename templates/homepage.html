@@ -19,9 +19,7 @@
         flex-direction: column;
         justify-content: space-between;
         padding: 15px;
-        background-color: #007bff;
         /* A default background color */
-        color: white;
         /* Default text color */
     }
 
@@ -55,8 +53,8 @@
     </div>
 </div>
 
-<script src="path/to/your/main.js"></script>
 <script>
+
     document.addEventListener('DOMContentLoaded', function () {
         fetch('/api/featured_items')
             .then(response => response.json())
@@ -90,6 +88,7 @@
                     button.href = `/view/${item.id}`;
                     button.textContent = 'Learn More';
 
+                    // Append the elements
                     cardBody.appendChild(title);
                     cardBody.appendChild(date);
                     cardBody.appendChild(button);
@@ -98,11 +97,17 @@
                     col.appendChild(card);
                     itemsContainer.appendChild(col);
 
-                    // Set image source last to prevent flash of unstyled content
+                    // Set image source and define onload function
                     img.onload = function () {
-                        setPredominantBackgroundColor(img, cardBody); // Set the background color
+                        setPredominantBackgroundColor(img, cardBody, function (bgColor) {
+                            const contrastColor = getContrastYIQ(bgColor);
+                            // Directly apply the contrast color to text elements
+                            title.style.color = contrastColor;
+                            date.style.color = contrastColor;
+                            button.style.color = contrastColor; // Optional: if you also want to change the button text color
+                        });
                     };
-                    img.src = item.image; // Start loading the image
+                    img.src = item.image; // Set the image source
                 });
             })
             .catch(error => {
@@ -110,6 +115,7 @@
                 itemsContainer.textContent = 'Failed to load featured items.';
             });
     });
+
 </script>
 
 {% endblock %}
