@@ -2,7 +2,7 @@
 
 body {
   font-size: 13px;
-  background: linear-gradient(white, grey) !important;
+  background: linear-gradient(white, lightgrey) !important;
 }
 
 .navbar {
@@ -251,4 +251,48 @@ body {
   padding: 1rem;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
+}
+
+.results-header .query-title {
+  font-size: 24px; /* Adjust as needed */
+}
+
+.search-results-list {
+  list-style: none;
+  padding: 0;
+}
+
+.search-result-item {
+  margin-bottom: 20px;
+}
+
+.rounded-title {
+  display: inline-block;
+  background-color: #f2f2f2; /* Light gray, adjust as needed */
+  border-radius: 15px; /* Rounded corners */
+  padding: 10px 15px;
+  font-weight: bold;
+}
+
+.result-title {
+  font-size: 20px; /* Larger font for titles */
+  font-weight: bold;
+}
+
+.result-abstract {
+  margin-top: 5px;
+}
+
+.result-keywords {
+  margin-top: 5px;
+  font-style: italic;
+}
+
+.search-result-link {
+  text-decoration: none;
+  color: black; /* Adjust link color as needed */
+}
+
+.search-result-link:hover {
+  text-decoration: underline;
 }

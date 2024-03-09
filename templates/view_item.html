@@ -11,7 +11,8 @@
         display: flex;
         flex-wrap: wrap;
         align-items: stretch;
-        width: 100%; /* Ensure card takes full width */
+        width: 100%;
+        /* Ensure card takes full width */
     }
 
     .card-custom:hover {
@@ -30,7 +31,8 @@
         display: flex;
         flex-direction: column;
         flex-grow: 1;
-        width: 100%; /* Ensure body takes full width */
+        width: 100%;
+        /* Ensure body takes full width */
     }
 
     .img-container {
@@ -39,13 +41,13 @@
         align-items: center;
         justify-content: center;
         overflow: hidden;
+        border-top-left-radius: 10px; /* Curve the top-left corner */
     }
 
     .rounded-img {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        border-radius: 10px !important;
     }
 
     .info-container {
@@ -53,6 +55,7 @@
         display: flex;
         flex-direction: column;
         padding: 16px;
+        border-top-right-radius: 10px; /* Curve the top-right corner */
     }
 
     .buttons-container {
@@ -63,7 +66,8 @@
         width: 100%;
     }
 
-    .keyword-btn, .btn-custom {
+    .keyword-btn,
+    .btn-custom {
         background-color: #ffa500;
         color: white;
         padding: 10px 20px;
@@ -78,22 +82,23 @@
         cursor: pointer;
     }
 
-    .keyword-btn:hover, .btn-custom:hover {
+    .keyword-btn:hover,
+    .btn-custom:hover {
         background-color: white;
         color: black;
         border: 1px solid #007bff;
     }
 
-    /* Adjustments for keywords section to take full width */
     .keyword-section {
         display: flex;
-        width: 100%; /* Ensure keywords section takes full width */
+        width: 100%;
     }
 
-    .keyword-section > div {
-        flex-grow: 1; /* Allow each column to grow */
+    .keyword-section>div {
+        flex-grow: 1;
     }
 </style>
+
 
 <div class="container">
     <div class="row">
@@ -142,10 +147,26 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const img = document.querySelector('.img-container img');
-        const infoContainer = document.querySelector('.info-container');
-        const keywordSection = document.querySelector('.keyword-section');
-        // Function to set dynamic background color based on image; assume it's defined elsewhere
+        const imgContainer = document.querySelector('.img-container img');
+        const infoContainer = document.querySelector('.info-container'); // Info container
+        const keywordSection = document.querySelector('.keyword-section'); // Keywords section
+
+        // Assuming imgContainer exists and main.js is correctly linked
+        if (imgContainer) {
+            setPredominantBackgroundColor(imgContainer, infoContainer).then(({ predominantColor, contrastColor }) => {
+                // Apply the predominant color as the background for the info container and the keywords section
+                infoContainer.style.backgroundColor = predominantColor;
+                keywordSection.style.backgroundColor = predominantColor;
+
+                // Apply the contrast color to all text elements inside the infoContainer and keywordSection
+                const textElementsInfoContainer = infoContainer.querySelectorAll('h2, p, div, a');
+                const textElementsKeywordSection = keywordSection.querySelectorAll('h3, .keyword-btn');
+
+                [...textElementsInfoContainer, ...textElementsKeywordSection].forEach(el => {
+                    el.style.color = contrastColor;
+                });
+            }).catch(error => console.error("Error setting background color:", error));
+        }
     });
 </script>
 

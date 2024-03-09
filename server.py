@@ -39,15 +39,15 @@ def get_matches(query):
         keyword_article_matches = [
             elem for elem in data if any(
                 kw in elem['keywords'] for kw in keyword_matches)]
-        section_matches = [
-            elem for elem in data if cleaned_query in elem['section'].lower() or cleaned_query in elem['subsection'].lower()]
 
-        print(f"Title matches: {title_matches}")
-        print(f"Abstract matches: {abstract_matches}")
-        print(f"Keyword matches: {keyword_article_matches}")
-        print(f"Section matches: {section_matches}")
+        all_matches = title_matches + abstract_matches + keyword_article_matches
+        article_count = len(set([elem['title'] for elem in all_matches]))
 
-    return title_matches, abstract_matches, keyword_article_matches, section_matches
+        # print(f"Title matches: {title_matches}")
+        # print(f"Abstract matches: {abstract_matches}")
+        # print(f"Keyword matches: {keyword_article_matches}")
+
+    return title_matches, abstract_matches, keyword_article_matches, article_count
 
 
 def highlight_term(original_text, term):
@@ -77,26 +77,34 @@ def featured_items():
 @app.route('/search', methods=['GET'])
 def search_results():
     query = request.args.get('query', '')
-    t_m, a_m, kwa_m, s_m = get_matches(query)
+    t_m, a_m, kwa_m, article_count = get_matches(query)
 
     # Highlight query term in the title, abstract, etc., without modifying original data
-    for matches in (t_m, a_m, kwa_m, s_m):
+    for matches in (t_m, a_m, kwa_m):
         for match in matches:
             match['display_title'] = highlight_term(match['title'], query)
             # Do similarly for abstracts and other fields as needed
 
     # Calculate the total number of matches
-    total_matches = sum(len(matches) for matches in (t_m, a_m, kwa_m, s_m))
-    no_matches_found = total_matches == 0
+    no_matches_found = article_count == 0
 
-    return render_template('search_results.html', t_matches=t_m, a_matches=a_m, kw_matches=kwa_m, s_matches=s_m, query=query, total_matches=total_matches, no_matches_found=no_matches_found)
+    return render_template('search_results.html', t_matches=t_m, a_matches=a_m, kw_matches=kwa_m, query=query, total_matches=article_count, no_matches_found=no_matches_found)
 
 
 @app.route('/search_link/<query>', methods=['GET'])
 def search_results_link(query):
-    t_m, a_m, kwa_m, s_m = get_matches(query)
+    t_m, a_m, kwa_m, article_count = get_matches(query)
 
-    return render_template('search_results.html', t_matches=t_m, a_matches=a_m, kw_matches=kwa_m, s_mateches=s_m, query=query)
+    # Highlight query term in the title, abstract, etc., without modifying original data
+    for matches in (t_m, a_m, kwa_m):
+        for match in matches:
+            match['display_title'] = highlight_term(match['title'], query)
+            # Do similarly for abstracts and other fields as needed
+
+    # Calculate the total number of matches
+    no_matches_found = article_count == 0
+
+    return render_template('search_results.html', t_matches=t_m, a_matches=a_m, kw_matches=kwa_m, query=query, total_matches=article_count, no_matches_found=no_matches_found)
 
 
 @app.route('/view/<id>')

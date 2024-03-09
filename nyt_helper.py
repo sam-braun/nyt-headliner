@@ -7,12 +7,12 @@ import datetime
 def process_keywords(keyword_string):
     if keyword_string:
         keywords = keyword_string.split(';')
-        for kw in keywords:
-            if ', ' in kw:
-                keywords.remove(kw)
-                name = kw.split(', ')
-                correct_name = f"{name[1]} {name[0]}"
-                keywords.append(correct_name)
+        # for kw in keywords:
+        #     if ', ' in kw:
+        #         keywords.remove(kw)
+        #         name = kw.split(', ')
+        #         correct_name = f"{name[1]} {name[0]}"
+        #         keywords.append(correct_name)
 
         return keywords
 
@@ -53,6 +53,7 @@ def format_article_data(article_data):
             formatted_data.append(formatted_article)
 
         for keyword in formatted_article['keywords']:
+            keyword = keyword.strip()
             if keyword not in all_keywords:
                 all_keywords.append(keyword)
 
