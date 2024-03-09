@@ -7,6 +7,8 @@ import nyt_helper as nyt
 
 app = Flask(__name__)
 
+global_id = 100
+
 
 def get_nyt_data():
     api_key = "AjqDOaTFAm1qxTherm3JbH3djF3cIUlg"
@@ -87,14 +89,17 @@ def item(id):
 
 @app.route('/add', methods=['GET', 'POST'])
 def add_item():
+    global global_id  # Declare global_id to modify it
+
     if request.method == 'POST':
         # Extract the form data
         title = request.form.get('title', '').strip()
         author = request.form.get('author', '').strip()
         date = request.form.get('date', '').strip()
+        url = request.form.get('url', '').strip()
+        section = request.form.get('section', '').strip()
         abstract = request.form.get('abstract', '').strip()
         image = request.form.get('image', '').strip()
-        image_caption = request.form.get('image_caption', '').strip()
 
         # Perform validation
         errors = {}
@@ -104,34 +109,33 @@ def add_item():
             errors['author'] = 'Author is required.'
         if not date:
             errors['date'] = 'Date is required.'
+        if not url:
+            errors['url'] = 'URL is required.'
 
         if errors:
             response = jsonify(errors)
             response.status_code = 400
             return response
 
-        # Insert into database (placeholder logic)
-        # Replace this with real database interaction
-        new_item_id = insert_into_database({
+        # Simulate database insertion by adding the new article to the 'data' list
+        new_article = {
+            'id': global_id,
             'title': title,
             'author': author,
             'date': date,
+            'section': section,
+            'url': url,
             'abstract': abstract,
-            'image': image,
-            'image_caption': image_caption
-        })
+            'image': image
+        }
 
-        # Return the ID of the new item
-        return jsonify({'id': new_item_id})
+        data.append(new_article)
+        global_id += 1  # Increment the ID for the next article
+
+        return jsonify(new_article)
 
     # If it's a GET request, render the 'add_item.html' template
     return render_template('add_item.html')
-
-
-def insert_into_database(item_data):
-    # Placeholder for database insertion logic
-    # Assume we return the ID of the new item
-    return 123  # Replace with real ID after insertion
 
 
 if __name__ == '__main__':
