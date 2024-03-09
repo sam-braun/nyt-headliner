@@ -73,11 +73,9 @@
         <div class="col-lg-6 mb-4 d-flex flex-column">
             <div class="card-custom flex-grow-1 d-flex flex-column">
                 <!-- Use 'flex-grow-1' to make the image fill the flex container -->
+
                 <img src="{{ item.image }}" class="img-fluid rounded-img flex-grow-1" alt="{{ item.title }}"
                     style="object-fit: cover;">
-                {% if item.image_caption %}
-                <div class="card-header-custom">{{ item.image_caption }}</div>
-                {% endif %}
             </div>
         </div>
         <!-- Column for Article Details -->
@@ -94,7 +92,6 @@
                     {% else %}
                     <div>Section: {{ item.section }}</div>
                     {% endif %}
-                    <div>URL: {{ item.url }}</div>
                     <a href="{{ item.url }}" class="btn-custom mt-auto">Read Full Article</a>
                 </div>
             </div>
@@ -119,6 +116,6 @@
 
 
 <!-- Link to Bootstrap JS -->
-<script src="path/to/bootstrap.bundle.min.js"></script>
+<!-- <script src="path/to/bootstrap.bundle.min.js"></script> -->
 
 {% endblock %}

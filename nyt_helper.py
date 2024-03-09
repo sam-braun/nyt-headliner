@@ -19,7 +19,6 @@ def process_keywords(keyword_string):
 
 def format_article_data(article_data):
     formatted_data, all_keywords = [], []
-    id = 0
 
     for article in article_data:
         image_url, image_caption = '', ''
@@ -34,7 +33,6 @@ def format_article_data(article_data):
         keywords = process_keywords(article['adx_keywords'])
 
         formatted_article = {
-            'id': id,
             'url': article['url'],
             "published_date": article['published_date'],
             "update_date": article['updated'],
@@ -50,7 +48,6 @@ def format_article_data(article_data):
         }
 
         formatted_data.append(formatted_article)
-        id += 1
 
         for keyword in formatted_article['keywords']:
             if keyword not in all_keywords:

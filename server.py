@@ -14,6 +14,12 @@ def get_nyt_data():
     global data, all_keywords
     data, all_keywords = nyt.get_nyt_data(request_url)
 
+    global id
+    id = 0
+    for article in data:
+        article['id'] = id
+        id += 1
+
 
 def get_matches(query):
     if query:
