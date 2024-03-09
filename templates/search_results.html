@@ -1,51 +1,34 @@
-<!-- Samuel Braun slb2250 -->
-
 {% extends "layout.html" %}
 
 {% block content %}
-
-<h2>Showing Results in Titles for "{{ query }}"</h2>
-{% if t_matches %}
-<ul>
-    {% for item in t_matches %}
-    <li><a href="/view/{{ item.id }}">{{ item.title }}</a></li>
-    {% endfor %}
-</ul>
+<!-- Display search query and count results -->
+<h2>Showing Results for "{{ query }}"</h2>
+{% if no_matches_found %}
+<p>No matches found.</p>
 {% else %}
-<p>No results found</p>
+<p>{{ total_matches }} results found.</p>
 {% endif %}
 
-<h2>Showing Results in Abstracts for "{{ query }}"</h2>
-{% if a_matches %}
-<ul>
-    {% for item in a_matches %}
-    <li><a href="/view/{{ item.id }}">{{ item.title }}</a></li>
-    {% endfor %}
-</ul>
-{% else %}
-<p>No results found</p>
-{% endif %}
+{% for item in t_matches %}
+<li>
+    <a href="/view/{{ item.id }}" class="search-result" data-search-term="{{ query | safe }}">{{ item.title }}</a>
+</li>
+{% endfor %}
 
-<h2>Showing Results in Keywords for "{{ query }}"</h2>
-{% if kw_matches %}
-<ul>
-    {% for item in kw_matches %}
-    <li><a href="/view/{{ item.id }}">{{ item.title }}</a></li>
-    {% endfor %}
-</ul>
-{% else %}
-<p>No results found</p>
-{% endif %}
 
-<h2>Showing Results in Sections for "{{ query }}"</h2>
-{% if s_matches %}
-<ul>
-    {% for item in s_matches %}
-    <li><a href="/view/{{ item.id }}">{{ item.title }}</a></li>
-    {% endfor %}
-</ul>
-{% else %}
-<p>No results found</p>
-{% endif %}
+
+<script>
+    $(document).ready(function () {
+        $('.search-result').each(function () {
+            var searchTerm = $(this).data('search-term');
+            var originalText = $(this).text();
+            var highlightedText = originalText.replace(new RegExp(searchTerm, 'gi'), `<strong>$&</strong>`);
+            $(this).html(highlightedText);
+        });
+    });
+</script>
+
+
+<!-- Repeat for abstracts, keywords, and sections -->
 
 {% endblock %}

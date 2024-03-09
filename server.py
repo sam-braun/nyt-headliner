@@ -4,6 +4,9 @@ from flask import Flask, redirect, url_for
 from flask import render_template
 from flask import Response, request, jsonify
 import nyt_helper as nyt
+import re
+from markupsafe import escape
+
 
 app = Flask(__name__)
 
@@ -46,6 +49,15 @@ def get_matches(query):
     return title_matches, abstract_matches, keyword_article_matches, section_matches
 
 
+def highlight_term(original_text, term):
+    """Highlight the term in the text, case-insensitively, without modifying the original text."""
+    escaped_term = escape(term)
+    escaped_text = escape(original_text)
+    highlighted_text = re.sub(r'(?i)(' + re.escape(escaped_term) + r')',
+                              r'<strong>\1</strong>', escaped_text, flags=re.IGNORECASE)
+    return highlighted_text
+
+
 @app.route('/')
 def homepage():
     return render_template('homepage.html')
@@ -62,7 +74,17 @@ def search_results():
     query = request.args.get('query', '')
     t_m, a_m, kwa_m, s_m = get_matches(query)
 
-    return render_template('search_results.html', t_matches=t_m, a_matches=a_m, kw_matches=kwa_m, s_mateches=s_m, query=query)
+    # Highlight query term in the title, abstract, etc., without modifying original data
+    for matches in (t_m, a_m, kwa_m, s_m):
+        for match in matches:
+            match['display_title'] = highlight_term(match['title'], query)
+            # Do similarly for abstracts and other fields as needed
+
+    # Calculate the total number of matches
+    total_matches = sum(len(matches) for matches in (t_m, a_m, kwa_m, s_m))
+    no_matches_found = total_matches == 0
+
+    return render_template('search_results.html', t_matches=t_m, a_matches=a_m, kw_matches=kwa_m, s_matches=s_m, query=query, total_matches=total_matches, no_matches_found=no_matches_found)
 
 
 @app.route('/search_link/<query>', methods=['GET'])
