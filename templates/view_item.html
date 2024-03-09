@@ -8,13 +8,10 @@
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
         transition: 0.3s;
         border-radius: 10px;
-        /* 5px rounded corners */
         display: flex;
-        /* Display as flex to put image and info side by side */
         flex-wrap: wrap;
-        /* Allow wrapping for responsiveness */
         align-items: stretch;
-        /* Stretch items to match heights */
+        width: 100%; /* Ensure card takes full width */
     }
 
     .card-custom:hover {
@@ -22,64 +19,52 @@
     }
 
     .card-header-custom {
-        /* Bootstrap primary color */
         color: white;
         padding: 16px;
         font-size: 20px;
         width: 100%;
-        /* Ensure header takes full width */
     }
 
     .card-body-custom {
         padding: 16px;
         display: flex;
         flex-direction: column;
-        /* Stack content vertically */
         flex-grow: 1;
+        width: 100%; /* Ensure body takes full width */
     }
 
     .img-container {
         flex-basis: 50%;
-        /* Give image box equal width */
         display: flex;
         align-items: center;
         justify-content: center;
-        /* Center the image */
         overflow: hidden;
-        /* Hide excess image */
     }
 
     .rounded-img {
         width: 100%;
-        /* Cover the full width of its container */
         height: 100%;
-        /* Stretch to the full height of its container */
         object-fit: cover;
-        /* Cover the area without losing aspect ratio */
-        border-radius: 10px !important;
-        /* padding: 10px; */
-    }
-
-    #rounded {
-        border-radius: 0px !important;
-    }
-
-    #roundy {
         border-radius: 10px !important;
     }
-
 
     .info-container {
         flex-basis: 50%;
-        /* Give info box equal width */
         display: flex;
         flex-direction: column;
         padding: 16px;
     }
 
-    .btn-custom {
+    .buttons-container {
+        display: flex;
+        justify-content: start;
+        gap: 90px;
+        margin-top: auto;
+        width: 100%;
+    }
+
+    .keyword-btn, .btn-custom {
         background-color: #ffa500;
-        /* Bootstrap primary color */
         color: white;
         padding: 10px 20px;
         border: none;
@@ -93,90 +78,20 @@
         cursor: pointer;
     }
 
-    .btn-custom:hover {
+    .keyword-btn:hover, .btn-custom:hover {
         background-color: white;
         color: black;
         border: 1px solid #007bff;
     }
 
-    .keyword-list {
-        padding: 0;
-    }
-
-    .keyword-list li {
-        display: inline;
-        /* Make keywords inline */
-        margin-right: 10px;
-    }
-
-    .btn-read {
-        flex-basis: 75%;
-        /* Make Read Full Article button larger */
-    }
-
-    .btn-edit {
-        flex-basis: 20%;
-        /* Make Edit button smaller */
-    }
-
-    .btn-custom:hover {
-        background-color: white;
-        color: black;
-        border: 1px solid #007bff;
-    }
-
-    .buttons-container {
+    /* Adjustments for keywords section to take full width */
+    .keyword-section {
         display: flex;
-        /* Enable flexbox for button container */
-        justify-content: start;
-        /* Align items to the start */
-        gap: 90px;
-        /* Add some space between the buttons */
-        margin-top: auto;
-        /* Optional: Push the buttons to the bottom of the card */
-        width: 100%;
-        /* Make the button container take up half the length of the box */
+        width: 100%; /* Ensure keywords section takes full width */
     }
 
-    .btn-custom {
-        flex-grow: 1;
-        /* Enable buttons to grow */
-        text-align: center;
-        /* Center button text */
-        /* Remove specific padding and margin styles if they conflict with the flex layout */
-    }
-
-    .btn-read-full-article {
-        flex-grow: 3;
-        /* Make 'Read Full Article' button three times as long as the 'Edit' button */
-    }
-
-    .keyword-btn {
-        background-color: #ffa500;
-        /* Bootstrap primary color */
-        color: white;
-        border: none;
-        border-radius: 5px;
-        padding: 5px 10px;
-        /* Adjust padding to fit content */
-        margin: 2px;
-        /* Space between buttons */
-        font-size: 14px;
-        /* Adjust font size for better readability */
-        cursor: pointer;
-        /* Cursor changes to pointer to indicate clickable */
-        text-decoration: none;
-        /* Remove underline from anchor tags */
-        display: inline-block;
-        /* Display keywords side by side */
-        transition: background-color 0.3s ease;
-        /* Smooth transition for hover effect */
-    }
-
-    .keyword-btn:hover {
-        background-color: #ffa500;
-        /* Darker shade on hover for better user feedback */
-        color: #ffffff;
+    .keyword-section > div {
+        flex-grow: 1; /* Allow each column to grow */
     }
 </style>
 
@@ -205,29 +120,19 @@
                         <a href="{{ item.url }}" class="btn-custom btn-read-full-article">Read Full Article</a>
                         <a href="{{ url_for('edit_item', id=item['id']) }}" class="btn-custom btn-edit">Edit</a>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
-    <!-- Row for Keywords (remains unchanged) -->
     <div class="row">
         <div class="col-12">
-            <div class="row card-custom">
-                <div class="col-2">
-                    <div class="card-body-custom">
-                        <h3>Keywords</h3>
-                    </div>
-                </div>
-                <div class="col-10">
-
-                    <div class="card-body-custom">
-                        <div class="keyword-list">
-                            {% for keyword in item.keywords %}
-                            <!-- Each keyword wrapped in an anchor tag styled as a button -->
-                            <a href="/search_link/{{ keyword }}" class="keyword-btn">{{ keyword }}</a>
-                            {% endfor %}
-                        </div>
+            <div class="card-custom keyword-section">
+                <div class="card-body-custom">
+                    <h3>Keywords</h3>
+                    <div class="keyword-list">
+                        {% for keyword in item.keywords %}
+                        <a href="/search_link/{{ keyword }}" class="keyword-btn">{{ keyword }}</a>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
@@ -237,37 +142,11 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const img = document.querySelector('.img-container img'); // Assuming there's only one image per page as per your structure
-        const infoContainer = document.querySelector('.info-container'); // Info container
-        const keywordsSection = document.querySelector('.card-custom .card-body-custom'); // Keywords section, adjust selector if necessary
-
-        if (img) {
-            img.onload = () => {
-                setPredominantBackgroundColor(img, infoContainer).then(({ predominantColor, contrastColor }) => {
-                    // Apply the predominant color as the background for both the info container and the keywords section
-                    infoContainer.style.backgroundColor = predominantColor;
-                    keywordsSection.style.backgroundColor = predominantColor;
-
-                    // Apply the contrast color to all text elements inside the infoContainer
-                    const textElements = infoContainer.querySelectorAll('h2, p, div, a');
-                    textElements.forEach(el => {
-                        el.style.color = contrastColor;
-                    });
-
-                    // Optionally, apply the contrast color to text elements inside the keywords section
-                    const keywordButtons = keywordsSection.querySelectorAll('.keyword-btn');
-                    keywordButtons.forEach(btn => {
-                        btn.style.color = contrastColor; // Update this if you want a different contrast logic for keywords
-                    });
-                });
-            };
-            if (img.complete) {
-                // If the image is already loaded before the event listener is set
-                img.onload();
-            }
-        }
+        const img = document.querySelector('.img-container img');
+        const infoContainer = document.querySelector('.info-container');
+        const keywordSection = document.querySelector('.keyword-section');
+        // Function to set dynamic background color based on image; assume it's defined elsewhere
     });
-
 </script>
 
 {% endblock %}
