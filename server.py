@@ -1,5 +1,6 @@
 # Samuel Braun slb2250
 
+import random
 from flask import Flask, redirect, url_for
 from flask import render_template
 from flask import Response, request, jsonify
@@ -65,8 +66,11 @@ def homepage():
 
 @app.route('/api/featured_items')
 def featured_items():
-    
-    featured = data[:6]
+    article_count = len(data)
+
+    indices = random.sample(range(article_count), 6)
+    featured = [data[i] for i in indices]
+
     return jsonify(featured)
 
 

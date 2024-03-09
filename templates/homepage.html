@@ -4,51 +4,46 @@
 
 <style>
     .custom-card {
-        /* Adjustments as per your image */
         border-radius: 10px;
         overflow: hidden;
-        /* Ensure the border-radius applies to child img */
     }
 
     .custom-card-img {
-        height: 100%;
-        /* Fixed height for consistency */
+        height: 220px;
+        /* Set a fixed height for all images */
         object-fit: cover;
-        /* Cover the area without stretching the image */
     }
 
     .custom-card-body {
-        /* Your image has a blue background */
-        color: #ffffff;
-        /* Text color */
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        /* Space between title/date and button */
         padding: 15px;
-        /* Padding as per your image */
+        background-color: #007bff;
+        /* A default background color */
+        color: white;
+        /* Default text color */
     }
 
     .custom-card-title,
     .custom-card-date {
         margin: 0;
-        /* Remove default margins */
     }
 
     .custom-btn-learn-more {
         background-color: #ffa500;
-        /* Orange color button */
         border: none;
         border-radius: 5px;
-        /* Slight rounding on the button edges */
         color: #ffffff;
+        text-align: center;
+        margin-top: 10px;
+        /* Added margin to top */
     }
 
-    /* Responsive columns */
+    /* Responsive design */
     @media (max-width: 768px) {
         .custom-card-img {
             height: auto;
-            /* Adjust height on smaller screens */
         }
     }
 </style>
@@ -60,51 +55,8 @@
     </div>
 </div>
 
+<script src="path/to/your/main.js"></script>
 <script>
-    function setAverageBackgroundColor(imageElement, containerElement) {
-        const canvas = document.createElement('canvas');
-        const context = canvas.getContext('2d');
-        const img = new Image();
-
-        img.onload = function () {
-            let colorSum = { r: 0, g: 0, b: 0 };
-            let pixelCount = 0;
-            let imageData, data;
-
-            // Set canvas size to the image size
-            canvas.width = this.width;
-            canvas.height = this.height;
-            context.drawImage(this, 0, 0, this.width, this.height);
-
-            // Get image data
-            imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-            data = imageData.data;
-
-            // Sum up all pixel values
-            for (let i = 0; i < data.length; i += 4) {
-                colorSum.r += data[i];     // Red
-                colorSum.g += data[i + 1]; // Green
-                colorSum.b += data[i + 2]; // Blue
-                pixelCount++;
-            }
-
-            // Calculate average RGB
-            colorSum.r = Math.floor(colorSum.r / pixelCount);
-            colorSum.g = Math.floor(colorSum.g / pixelCount);
-            colorSum.b = Math.floor(colorSum.b / pixelCount);
-
-            // Set container background to average color
-            containerElement.style.backgroundColor = `rgb(${colorSum.r}, ${colorSum.g}, ${colorSum.b})`;
-        };
-
-        // Handle CORS security if the images are not served from the same domain
-        img.crossOrigin = 'Anonymous';
-
-        // Start loading the image
-        img.src = imageElement.src;
-    }
-
-
     document.addEventListener('DOMContentLoaded', function () {
         fetch('/api/featured_items')
             .then(response => response.json())
@@ -113,25 +65,17 @@
 
                 data.forEach(item => {
                     const col = document.createElement('div');
-                    col.className = 'col-md-4 mb-4';
-
-                    const imge = document.createElement('img');
-                    imge.onload = function () {
-                        setPredominantBackgroundColor(imge, card); // Pass the image and its card container to the function
-                    };
-                    imge.src = item.image; // Set the source to start loading the image
-                    imge.alt = 'Article Image';
+                    col.className = 'col-md-4 mb-4 d-flex';
 
                     const card = document.createElement('div');
-                    card.className = 'card custom-card h-100';
+                    card.className = 'card custom-card flex-fill';
 
                     const img = document.createElement('img');
-                    imge.className = 'card-img-top custom-card-img';
-                    imge.src = item.image; // Placeholder for the image source
-                    imge.alt = 'Article Image';
+                    img.className = 'card-img-top custom-card-img';
+                    img.alt = 'Article Image';
 
                     const cardBody = document.createElement('div');
-                    cardBody.className = 'card-body custom-card-body';
+                    cardBody.className = 'card-body custom-card-body d-flex flex-column';
 
                     const title = document.createElement('h5');
                     title.className = 'custom-card-title';
@@ -139,28 +83,30 @@
 
                     const date = document.createElement('p');
                     date.className = 'custom-card-date';
-                    date.textContent = item.published_date; // Placeholder for the published date
+                    date.textContent = item.published_date; // Use the actual property from the data
 
                     const button = document.createElement('a');
-                    button.className = 'btn custom-btn-learn-more';
+                    button.className = 'btn custom-btn-learn-more mt-auto'; // Align button to bottom
                     button.href = `/view/${item.id}`;
                     button.textContent = 'Learn More';
 
                     cardBody.appendChild(title);
                     cardBody.appendChild(date);
                     cardBody.appendChild(button);
-
-                    card.appendChild(imge);
+                    card.appendChild(img);
                     card.appendChild(cardBody);
-
                     col.appendChild(card);
-
                     itemsContainer.appendChild(col);
+
+                    // Set image source last to prevent flash of unstyled content
+                    img.onload = function () {
+                        setPredominantBackgroundColor(img, cardBody); // Set the background color
+                    };
+                    img.src = item.image; // Start loading the image
                 });
             })
             .catch(error => {
                 console.error('Error loading featured items:', error);
-                // Handle failure
                 itemsContainer.textContent = 'Failed to load featured items.';
             });
     });
