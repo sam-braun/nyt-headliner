@@ -112,7 +112,7 @@
     }
 
     .btn-edit {
-        flex-basis: 25%;
+        flex-basis: 20%;
         /* Make Edit button smaller */
     }
 
@@ -127,11 +127,11 @@
         /* Enable flexbox for button container */
         justify-content: start;
         /* Align items to the start */
-        gap: 10px;
+        gap: 90px;
         /* Add some space between the buttons */
         margin-top: auto;
         /* Optional: Push the buttons to the bottom of the card */
-        width: 50%;
+        width: 100%;
         /* Make the button container take up half the length of the box */
     }
 
@@ -148,8 +148,32 @@
         /* Make 'Read Full Article' button three times as long as the 'Edit' button */
     }
 
-    .btn-edit {
-        /* The 'Edit' button will naturally be smaller due to the 'flex-grow: 1' from .btn-custom */
+    .keyword-btn {
+        background-color: #ffa500;
+        /* Bootstrap primary color */
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 5px 10px;
+        /* Adjust padding to fit content */
+        margin: 2px;
+        /* Space between buttons */
+        font-size: 14px;
+        /* Adjust font size for better readability */
+        cursor: pointer;
+        /* Cursor changes to pointer to indicate clickable */
+        text-decoration: none;
+        /* Remove underline from anchor tags */
+        display: inline-block;
+        /* Display keywords side by side */
+        transition: background-color 0.3s ease;
+        /* Smooth transition for hover effect */
+    }
+
+    .keyword-btn:hover {
+        background-color: #ffa500;
+        /* Darker shade on hover for better user feedback */
+        color: #ffffff;
     }
 </style>
 
@@ -189,11 +213,12 @@
             <div class="card-custom">
                 <div class="card-header-custom">Keywords</div>
                 <div class="card-body-custom">
-                    <ul class="keyword-list">
+                    <div class="keyword-list">
                         {% for keyword in item.keywords %}
-                        <li><a href="/search_link/{{ keyword }}">{{ keyword }}</a></li>
+                        <!-- Each keyword wrapped in an anchor tag styled as a button -->
+                        <a href="/search_link/{{ keyword }}" class="keyword-btn">{{ keyword }}</a>
                         {% endfor %}
-                    </ul>
+                    </div>
                 </div>
             </div>
         </div>
