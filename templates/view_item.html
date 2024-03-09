@@ -7,7 +7,7 @@
     .card-custom {
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
         transition: 0.3s;
-        border-radius: 5px;
+        border-radius: 10px;
         /* 5px rounded corners */
         display: flex;
         /* Display as flex to put image and info side by side */
@@ -22,7 +22,6 @@
     }
 
     .card-header-custom {
-        background-color: #007bff;
         /* Bootstrap primary color */
         color: white;
         padding: 16px;
@@ -58,10 +57,14 @@
         object-fit: cover;
         /* Cover the area without losing aspect ratio */
         border-radius: 10px !important;
-        padding: 10px;
+        /* padding: 10px; */
     }
 
     #rounded {
+        border-radius: 0px !important;
+    }
+
+    #roundy {
         border-radius: 10px !important;
     }
 
@@ -180,7 +183,7 @@
 <div class="container">
     <div class="row">
         <div class="col-12 mb-4">
-            <div class="card-custom">
+            <div id="roundy" class="card-custom">
                 <!-- Image Container -->
                 <div class="img-container">
                     <img src="{{ item.image }}" id="rounded" class="img-fluid rounded-img" alt="{{ item.title }}">
@@ -210,19 +213,61 @@
     <!-- Row for Keywords (remains unchanged) -->
     <div class="row">
         <div class="col-12">
-            <div class="card-custom">
-                <div class="card-header-custom">Keywords</div>
-                <div class="card-body-custom">
-                    <div class="keyword-list">
-                        {% for keyword in item.keywords %}
-                        <!-- Each keyword wrapped in an anchor tag styled as a button -->
-                        <a href="/search_link/{{ keyword }}" class="keyword-btn">{{ keyword }}</a>
-                        {% endfor %}
+            <div class="row card-custom">
+                <div class="col-2">
+                    <div class="card-body-custom">
+                        <h3>Keywords</h3>
+                    </div>
+                </div>
+                <div class="col-10">
+
+                    <div class="card-body-custom">
+                        <div class="keyword-list">
+                            {% for keyword in item.keywords %}
+                            <!-- Each keyword wrapped in an anchor tag styled as a button -->
+                            <a href="/search_link/{{ keyword }}" class="keyword-btn">{{ keyword }}</a>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const img = document.querySelector('.img-container img'); // Assuming there's only one image per page as per your structure
+        const infoContainer = document.querySelector('.info-container'); // Info container
+        const keywordsSection = document.querySelector('.card-custom .card-body-custom'); // Keywords section, adjust selector if necessary
+
+        if (img) {
+            img.onload = () => {
+                setPredominantBackgroundColor(img, infoContainer).then(({ predominantColor, contrastColor }) => {
+                    // Apply the predominant color as the background for both the info container and the keywords section
+                    infoContainer.style.backgroundColor = predominantColor;
+                    keywordsSection.style.backgroundColor = predominantColor;
+
+                    // Apply the contrast color to all text elements inside the infoContainer
+                    const textElements = infoContainer.querySelectorAll('h2, p, div, a');
+                    textElements.forEach(el => {
+                        el.style.color = contrastColor;
+                    });
+
+                    // Optionally, apply the contrast color to text elements inside the keywords section
+                    const keywordButtons = keywordsSection.querySelectorAll('.keyword-btn');
+                    keywordButtons.forEach(btn => {
+                        btn.style.color = contrastColor; // Update this if you want a different contrast logic for keywords
+                    });
+                });
+            };
+            if (img.complete) {
+                // If the image is already loaded before the event listener is set
+                img.onload();
+            }
+        }
+    });
+
+</script>
 
 {% endblock %}

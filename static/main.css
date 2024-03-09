@@ -2,6 +2,7 @@
 
 body {
   font-size: 13px;
+  background: linear-gradient(white, grey) !important;
 }
 
 .navbar {
