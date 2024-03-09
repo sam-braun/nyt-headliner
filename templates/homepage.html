@@ -81,14 +81,13 @@
 
                     const date = document.createElement('p');
                     date.className = 'custom-card-date';
-                    date.textContent = item.published_date; // Use the actual property from the data
+                    date.textContent = item.published_date;
 
                     const button = document.createElement('a');
-                    button.className = 'btn custom-btn-learn-more mt-auto'; // Align button to bottom
+                    button.className = 'btn custom-btn-learn-more mt-auto';
                     button.href = `/view/${item.id}`;
                     button.textContent = 'Learn More';
 
-                    // Append the elements
                     cardBody.appendChild(title);
                     cardBody.appendChild(date);
                     cardBody.appendChild(button);
@@ -97,17 +96,15 @@
                     col.appendChild(card);
                     itemsContainer.appendChild(col);
 
-                    // Set image source and define onload function
-                    img.onload = function () {
-                        setPredominantBackgroundColor(img, cardBody, function (bgColor) {
-                            const contrastColor = getContrastYIQ(bgColor);
-                            // Directly apply the contrast color to text elements
+                    img.onload = () => {
+                        setPredominantBackgroundColor(img, cardBody).then(({ predominantColor, contrastColor }) => {
+                            // Apply the contrast color directly to text elements and the button
                             title.style.color = contrastColor;
                             date.style.color = contrastColor;
-                            button.style.color = contrastColor; // Optional: if you also want to change the button text color
+                            button.style.color = contrastColor; // If you want to change the button text color
                         });
                     };
-                    img.src = item.image; // Set the image source
+                    img.src = item.image;
                 });
             })
             .catch(error => {
