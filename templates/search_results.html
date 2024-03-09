@@ -1,42 +1,47 @@
 {% extends "layout.html" %}
 
 {% block content %}
+
+<style>
+    .result-count {
+        font-size: 20px;
+    }
+
+    .search-item {
+        background-color: #b6dfff;
+        border-radius: 10px;
+        padding: 10px;
+        margin: 10px 0;
+    }
+
+    .search-title {
+        font-size: 20px;
+    }
+</style>
+
 <!-- Display search query and count results -->
 <h2>Showing Results for "{{ query }}"</h2>
 {% if no_matches_found %}
-<p>No matches found.</p>
+<p class="result-count">No matches found.</p>
 {% else %}
-<p>{{ total_matches }} total articles were found.</p>
+<p class="result-count">{{ total_matches }} total articles were found.</p>
 {% endif %}
 
-<!-- Title matches with rounded box -->
-{% for item in t_matches %}
-<li style="list-style-type: none;">
-    <div style="background-color: #f0f0f0; border-radius: 10px; padding: 10px; margin: 10px 0;">
-        <a href="/view/{{ item.id }}" class="search-result" data-search-term="{{ query | safe }}" style="font-size: larger;">{{ item.title }}</a>
-    </div>
-</li>
-{% endfor %}
-
-<!-- Abstract matches with title and abstract -->
-{% for item in a_matches %}
-<li style="list-style-type: none;">
-    <a href="/view/{{ item.id }}" class="search-result" data-search-term="{{ query | safe }}" style="font-size: larger;">{{ item.title }}</a>
-    <p><a href="/view/{{ item.id }}" class="search-result" data-search-term="{{ query | safe }}">{{ item.abstract }}</a></p>
-</li>
-{% endfor %}
 
 <!-- Keyword matches with title, abstract, and keywords -->
 {% for item in kw_matches %}
-<li style="list-style-type: none;">
-    <a href="/view/{{ item.id }}" class="search-result" data-search-term="{{ query | safe }}" style="font-size: larger;">{{ item.title }}</a>
-    <p><a href="/view/{{ item.id }}" class="search-result" data-search-term="{{ query | safe }}">{{ item.abstract }}</a></p>
-    <p>Keywords: 
-    {% for keyword in item.keywords %}
-        <a href="/search?query={{ keyword }}" class="search-result" data-search-term="{{ query | safe }}">{{ keyword }}</a>{% if not loop.last %}, {% endif %}
-    {% endfor %}
+<div class="search-item">
+    <a href="/view/{{ item.id }}" class="search-title search-result" data-search-term="{{ query | safe }}">{{ item.title
+        }}</a>
+    <p><a href="/view/{{ item.id }}" class="search-result" data-search-term="{{ query | safe }}">{{ item.abstract }}</a>
     </p>
-</li>
+    <p>Keywords:
+        {% for keyword in item.keywords %}
+        <a href="/search?query={{ keyword }}" class="search-result" data-search-term="{{ query | safe }}">{{ keyword
+            }}</a>{% if not loop.last %}, {% endif %}
+        {% endfor %}
+    </p>
+</div>
 {% endfor %}
 
 <script>

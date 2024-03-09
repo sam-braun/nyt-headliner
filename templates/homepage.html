@@ -39,6 +39,17 @@
         /* Added margin to top */
     }
 
+    .button-below {
+        padding-bottom: 13px;
+    }
+
+    .welcome-title {
+        font-family: 'Times New Roman', Times, serif;
+        font-weight: bold;
+        line-height: 1.1;
+        font-size: 40px;
+    }
+
     /* Responsive design */
     @media (max-width: 768px) {
         .custom-card-img {
@@ -48,7 +59,8 @@
 </style>
 
 <div class="container mt-4">
-    <h3 class="text-center">This Week's Most Popular Articles</h3>
+    <div class=" welcome-title  text-center">This Week's Most Popular Articles</div>
+    <p class="text-center button-below">All article previews sourced from © 2024 The New York Times Company.</p>
     <div id="items-container" class="row">
         <!-- Article cards will be inserted here by JavaScript -->
     </div>
@@ -81,7 +93,7 @@
                     title.textContent = item.title;
 
                     const date = document.createElement('p');
-                    date.className = 'custom-card-date';
+                    date.className = 'custom-card-date button-below';
                     date.textContent = item.published_date;
 
                     const button = document.createElement('a');

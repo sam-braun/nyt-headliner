@@ -41,13 +41,14 @@ def get_matches(query):
                 kw in elem['keywords'] for kw in keyword_matches)]
 
         all_matches = title_matches + abstract_matches + keyword_article_matches
+        all_articles = [elem for elem in all_matches]
         article_count = len(set([elem['title'] for elem in all_matches]))
 
         # print(f"Title matches: {title_matches}")
         # print(f"Abstract matches: {abstract_matches}")
         # print(f"Keyword matches: {keyword_article_matches}")
 
-    return title_matches, abstract_matches, keyword_article_matches, article_count
+    return title_matches, abstract_matches, all_articles, article_count
 
 
 def highlight_term(original_text, term):
