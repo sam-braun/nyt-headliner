@@ -1,3 +1,5 @@
+// Samuel Braun slb2250
+
 function setPredominantBackgroundColor(imageElement, containerElement) {
     return new Promise((resolve, reject) => {
         const canvas = document.createElement('canvas');

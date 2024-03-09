@@ -7,13 +7,6 @@ from datetime import datetime
 def process_keywords(keyword_string):
     if keyword_string:
         keywords = keyword_string.split(';')
-        # for kw in keywords:
-        #     if ', ' in kw:
-        #         keywords.remove(kw)
-        #         name = kw.split(', ')
-        #         correct_name = f"{name[1]} {name[0]}"
-        #         keywords.append(correct_name)
-
         return keywords
 
 

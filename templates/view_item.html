@@ -1,144 +1,15 @@
+<!-- Samuel Braun slb2250 -->
 {% extends "layout.html" %}
 
 {% block content %}
-
-<!-- Custom CSS -->
-<style>
-    .view-title {
-        font-size: 36px;
-        font-weight: bold;
-        font-family: 'Times New Roman', Times, serif;
-        line-height: 1.1;
-        padding-bottom: 10px;
-    }
-
-    .abstract {
-        font-size: 23px;
-    }
-
-    .detail {
-        font-size: 16px;
-        font-weight: bold;
-    }
-
-    .card-custom {
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-        transition: 0.3s;
-        border-radius: 10px;
-        display: flex;
-        flex-wrap: wrap;
-        align-items: stretch;
-        width: 100%;
-        /* Ensure card takes full width */
-    }
-
-    .card-custom:hover {
-        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-    }
-
-    .card-header-custom {
-        color: white;
-        padding: 16px;
-        font-size: 20px;
-        width: 100%;
-    }
-
-    .card-body-custom {
-        padding: 16px;
-        display: flex;
-        flex-direction: column;
-        flex-grow: 1;
-        width: 100%;
-        /* Ensure body takes full width */
-    }
-
-    .img-container {
-        flex-basis: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
-        border-top-left-radius: 10px;
-        /* Curve the top-left corner */
-    }
-
-    .rounded-img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .info-container {
-        flex-basis: 50%;
-        display: flex;
-        flex-direction: column;
-        padding: 16px;
-        border-top-right-radius: 10px;
-        /* Curve the top-right corner */
-    }
-
-    .buttons-container {
-        padding-top: 10px;
-        display: flex;
-        justify-content: start;
-        gap: 90px;
-        margin-top: auto;
-        width: 100%;
-    }
-
-    .keyword-btn,
-    .btn-custom {
-        padding-top: 10px;
-        background-color: #ffa500;
-        color: white;
-        padding: 5px 10px;
-        border: none;
-        border-radius: 5px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 4px 2px;
-        transition-duration: 0.4s;
-        cursor: pointer;
-    }
-
-    .keyword-btn:hover,
-    .btn-custom:hover {
-
-        background-color: white;
-        color: black;
-        border: 1px solid #007bff;
-    }
-
-    .keyword-section {
-        display: flex;
-        width: 100%;
-    }
-
-    .keyword-section>div {
-        flex-grow: 1;
-    }
-
-    .read-button {
-        width: 75%;
-    }
-
-    .edit-button {
-        width: 25%;
-    }
-</style>
-
 
 <div class="container">
     <div class="row">
         <div class="col-12 mb-4">
             <div id="roundy" class="card-custom">
-                <!-- Image Container -->
                 <div class="img-container">
                     <img src="{{ item.image }}" id="rounded" class="img-fluid rounded-img" alt="{{ item.title }}">
                 </div>
-                <!-- Info Container -->
                 <div class="info-container card-body-custom">
                     <div class="view-title">{{ item.title }}</div>
                     <p class="abstract">{{ item.abstract }}</p>
@@ -152,7 +23,6 @@
                     {% else %}
                     <div class="detail">Section: {{ item.section }}</div>
                     {% endif %}
-                    <!-- Inside your .info-container where the buttons are located -->
                     <div class="buttons-container">
                         <a href="{{ item.url }}" class="btn-custom read-button btn-read-full-article">Read Full Article</a>
                         <a href="{{ url_for('edit_item', id=item['id']) }}" class="read-button btn-custom btn-edit">Edit</a>
@@ -161,6 +31,7 @@
             </div>
         </div>
     </div>
+
     <div class="row">
         <div class="col-12">
             <div class="card-custom keyword-section">
@@ -180,17 +51,14 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const imgContainer = document.querySelector('.img-container img');
-        const infoContainer = document.querySelector('.info-container'); // Info container
-        const keywordSection = document.querySelector('.keyword-section'); // Keywords section
+        const infoContainer = document.querySelector('.info-container');
+        const keywordSection = document.querySelector('.keyword-section');
 
-        // Assuming imgContainer exists and main.js is correctly linked
         if (imgContainer) {
             setPredominantBackgroundColor(imgContainer, infoContainer).then(({ predominantColor, contrastColor }) => {
-                // Apply the predominant color as the background for the info container and the keywords section
                 infoContainer.style.backgroundColor = predominantColor;
                 keywordSection.style.backgroundColor = predominantColor;
 
-                // Apply the contrast color to all text elements inside the infoContainer and keywordSection
                 const textElementsInfoContainer = infoContainer.querySelectorAll('h2, p, div, a');
                 const textElementsKeywordSection = keywordSection.querySelectorAll('h3, .keyword-btn');
 

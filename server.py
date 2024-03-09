@@ -28,25 +28,26 @@ def get_nyt_data():
 
 
 def get_matches(query):
-    if query:
-        cleaned_query = query.lower().strip()
-        title_matches = [
-            elem for elem in data if cleaned_query in elem['title'].lower()]
-        abstract_matches = [
-            elem for elem in data if cleaned_query in elem['abstract'].lower()]
-        keyword_matches = [
-            kw for kw in all_keywords if cleaned_query in kw.lower()]
-        keyword_article_matches = [
-            elem for elem in data if any(
-                kw in elem['keywords'] for kw in keyword_matches)]
+    if not query:
+        return [], [], [], 0
 
-        all_matches = title_matches + abstract_matches + keyword_article_matches
-        all_articles = [elem for elem in all_matches]
-        article_count = len(set([elem['title'] for elem in all_matches]))
+    cleaned_query = query.lower().strip()
+    title_matches = [
+        elem for elem in data if cleaned_query in elem['title'].lower()]
+    abstract_matches = [
+        elem for elem in data if cleaned_query in elem['abstract'].lower()]
+    keyword_matches = [
+        kw for kw in all_keywords if cleaned_query in kw.lower()]
+    keyword_article_matches = [elem for elem in data if any(
+        kw in elem['keywords'] for kw in keyword_matches)]
 
-        # print(f"Title matches: {title_matches}")
-        # print(f"Abstract matches: {abstract_matches}")
-        # print(f"Keyword matches: {keyword_article_matches}")
+    unique_articles = {}
+    for article in title_matches + abstract_matches + keyword_article_matches:
+        if article['id'] not in unique_articles:
+            unique_articles[article['id']] = article
+
+    all_articles = list(unique_articles.values())
+    article_count = len(all_articles)
 
     return title_matches, abstract_matches, all_articles, article_count
 
@@ -80,13 +81,10 @@ def search_results():
     query = request.args.get('query', '')
     t_m, a_m, kwa_m, article_count = get_matches(query)
 
-    # Highlight query term in the title, abstract, etc., without modifying original data
     for matches in (t_m, a_m, kwa_m):
         for match in matches:
             match['display_title'] = highlight_term(match['title'], query)
-            # Do similarly for abstracts and other fields as needed
 
-    # Calculate the total number of matches
     no_matches_found = article_count == 0
 
     return render_template('search_results.html', t_matches=t_m, a_matches=a_m, kw_matches=kwa_m, query=query, total_matches=article_count, no_matches_found=no_matches_found)
@@ -96,13 +94,10 @@ def search_results():
 def search_results_link(query):
     t_m, a_m, kwa_m, article_count = get_matches(query)
 
-    # Highlight query term in the title, abstract, etc., without modifying original data
     for matches in (t_m, a_m, kwa_m):
         for match in matches:
             match['display_title'] = highlight_term(match['title'], query)
-            # Do similarly for abstracts and other fields as needed
 
-    # Calculate the total number of matches
     no_matches_found = article_count == 0
 
     return render_template('search_results.html', t_matches=t_m, a_matches=a_m, kw_matches=kwa_m, query=query, total_matches=article_count, no_matches_found=no_matches_found)
@@ -125,10 +120,9 @@ def item(id):
 
 @app.route('/add', methods=['GET', 'POST'])
 def add_item():
-    global global_id  # Declare global_id to modify it
+    global global_id
 
     if request.method == 'POST':
-        # Extract the form data
         title = request.form.get('title', '').strip()
         author = request.form.get('author', '').strip()
         date = request.form.get('date', '').strip()
@@ -138,7 +132,6 @@ def add_item():
         abstract = request.form.get('abstract', '').strip()
         image = request.form.get('image', '').strip()
 
-        # Perform validation
         errors = {}
         if not title:
             errors['title'] = 'Title is required.'
@@ -154,7 +147,6 @@ def add_item():
             response.status_code = 400
             return response
 
-        # Simulate database insertion by adding the new article to the 'data' list
         new_article = {
             'id': global_id,
             'title': title,
@@ -169,17 +161,16 @@ def add_item():
         }
 
         data.append(new_article)
-        global_id += 1  # Increment the ID for the next article
+        global_id += 1
 
         return jsonify(new_article)
 
-    # If it's a GET request, render the 'add_item.html' template
     return render_template('add_item.html')
 
 
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit_item(id):
-    global data  # Make sure we're modifying the global data variable
+    global data
     article = next((article for article in data if article['id'] == id), None)
 
     if not article:
@@ -198,7 +189,6 @@ def edit_item(id):
         if not (title and author and update_date):
             return jsonify({'error': 'Required fields are missing'}), 400
 
-        # Update the article directly in the data list
         for i, art in enumerate(data):
             if art['id'] == id:
 
@@ -210,12 +200,10 @@ def edit_item(id):
                 data[i]['subsection'] = subsection
                 data[i]['abstract'] = abstract
                 data[i]['image'] = image
-                break  # Stop iterating once we've found and updated the article
+                break
 
-        # Redirect to the view page after updating
         return redirect(url_for('item', id=id))
 
-    # If it's a GET request, render the edit page with the article data
     return render_template('edit_item.html', article=article)
 
 

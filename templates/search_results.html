@@ -1,25 +1,9 @@
+<!-- Samuel Braun slb2250 -->
 {% extends "layout.html" %}
 
 {% block content %}
 
-<style>
-    .result-count {
-        font-size: 20px;
-    }
 
-    .search-item {
-        background-color: #b6dfff;
-        border-radius: 10px;
-        padding: 10px;
-        margin: 10px 0;
-    }
-
-    .search-title {
-        font-size: 20px;
-    }
-</style>
-
-<!-- Display search query and count results -->
 <h2>Showing Results for "{{ query }}"</h2>
 {% if no_matches_found %}
 <p class="result-count">No matches found.</p>
@@ -28,12 +12,12 @@
 {% endif %}
 
 
-<!-- Keyword matches with title, abstract, and keywords -->
 {% for item in kw_matches %}
 <div class="search-item">
     <a href="/view/{{ item.id }}" class="search-title search-result" data-search-term="{{ query | safe }}">{{ item.title
         }}</a>
-    <p><a href="/view/{{ item.id }}" class="search-result" data-search-term="{{ query | safe }}">{{ item.abstract }}</a>
+    <p>Abstract: <a href="/view/{{ item.id }}" class="search-result" data-search-term="{{ query | safe }}">{{
+            item.abstract }}</a>
     </p>
     <p>Keywords:
         {% for keyword in item.keywords %}
