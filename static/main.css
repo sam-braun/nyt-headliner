@@ -18,12 +18,65 @@ body {
   display: flex;
   align-items: center;
 }
+.custom-card {
+  border-radius: 10px;
+  overflow: hidden;
+  border-color: black;
+}
 
+.custom-card-img {
+  height: 220px;
+  /* Set a fixed height for all images */
+  object-fit: cover;
+}
 
+.custom-card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 15px;
+  /* A default background color */
+  /* THIS IS WHERE THE Default text color GOES!!!!!!!!! */
+}
 
+.custom-card-title,
+.custom-card-date {
+  margin: 0;
+}
+
+.custom-btn-learn-more {
+  background-color: #ffa500;
+  border: none;
+  border-radius: 5px;
+  color: #ffffff;
+  text-align: center;
+  margin-top: 10px;
+  /* Added margin to top */
+}
+
+.button-below {
+  padding-bottom: 13px;
+}
+.button-above {
+  padding-top: 20px;
+}
+
+.welcome-title {
+  font-family: "Times New Roman", Times, serif;
+  font-weight: bold;
+  line-height: 1.1;
+  font-size: 40px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .custom-card-img {
+    height: auto;
+  }
+}
 
 .title {
-  font-size: 45px;
+  font-size: 55px;
   font-weight: bold;
   margin-bottom: 15px;
   margin-top: 25px;
@@ -290,4 +343,36 @@ body {
 
 .search-result-link:hover {
   text-decoration: underline;
+}
+
+.menu-item {
+  color: white !important;
+  font-size: 20px;
+}
+
+#searchInput {
+  margin-right: 10px;
+  /* Adjust the 10px to the amount of space you want */
+  margin-top: 3px;
+}
+
+#search-shift {
+  padding-top: 7px !important;
+  margin-top: 7px;
+}
+
+.btn-custom {
+  /* padding-top: 10px; */
+  background-color: #ffa500;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
 }

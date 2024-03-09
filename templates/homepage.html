@@ -2,68 +2,11 @@
 
 {% block content %}
 
-<style>
-    .custom-card {
-        border-radius: 10px;
-        overflow: hidden;
-        border-color: black;
-    }
-
-    .custom-card-img {
-        height: 220px;
-        /* Set a fixed height for all images */
-        object-fit: cover;
-    }
-
-    .custom-card-body {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        padding: 15px;
-        /* A default background color */
-        /* THIS IS WHERE THE Default text color GOES!!!!!!!!! */
-    }
-
-    .custom-card-title,
-    .custom-card-date {
-        margin: 0;
-    }
-
-    .custom-btn-learn-more {
-        background-color: #ffa500;
-        border: none;
-        border-radius: 5px;
-        color: #ffffff;
-        text-align: center;
-        margin-top: 10px;
-        /* Added margin to top */
-    }
-
-    .button-below {
-        padding-bottom: 13px;
-    }
-
-    .welcome-title {
-        font-family: 'Times New Roman', Times, serif;
-        font-weight: bold;
-        line-height: 1.1;
-        font-size: 40px;
-    }
-
-    /* Responsive design */
-    @media (max-width: 768px) {
-        .custom-card-img {
-            height: auto;
-        }
-    }
-</style>
 
 <div class="container mt-4">
-    <div class=" welcome-title  text-center">This Week's Most Popular Articles</div>
+    <div class=" welcome-title  text-center button-above">This Week's Most Popular Articles</div>
     <p class="text-center button-below">All article previews sourced from © 2024 The New York Times Company.</p>
-    <div id="items-container" class="row">
-        <!-- Article cards will be inserted here by JavaScript -->
-    </div>
+    <div id="items-container" class="row"></div>
 </div>
 
 <script>
@@ -111,10 +54,9 @@
 
                     img.onload = () => {
                         setPredominantBackgroundColor(img, cardBody).then(({ predominantColor, contrastColor }) => {
-                            // Apply the contrast color directly to text elements and the button
                             title.style.color = contrastColor;
                             date.style.color = contrastColor;
-                            button.style.color = contrastColor; // If you want to change the button text color
+                            button.style.color = contrastColor;
                         });
                     };
                     img.src = item.image;

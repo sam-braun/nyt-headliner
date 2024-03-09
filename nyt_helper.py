@@ -1,7 +1,7 @@
 # Samuel Braun slb2250
 
 import requests
-import datetime
+from datetime import datetime
 
 
 def process_keywords(keyword_string):
@@ -28,16 +28,14 @@ def format_article_data(article_data):
             image_url = first_media_item.get('url', '')
             image_caption = article['media'][0].get('caption', '')
 
-        # published_date = datetime.strptime(article['published_date'], "%Y-%m-%d").strftime("%B %d, %Y")
-
         keywords = process_keywords(article['adx_keywords'])
         article['byline'] = article['byline'].replace('By ', '')
         article['updated'] = article['updated'][:-9]
 
         formatted_article = {
             'url': article['url'],
-            "published_date": article['published_date'],
-            "update_date": article['updated'],
+            "published_date": datetime.strptime(article['published_date'], "%Y-%m-%d").strftime("%B %d, %Y"),
+            "update_date": datetime.strptime(article['updated'], "%Y-%m-%d").strftime("%B %d, %Y"),
             'section': article['section'],
             'subsection': article['subsection'],
             'adx_keywords': article['adx_keywords'],
