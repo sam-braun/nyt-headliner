@@ -93,6 +93,8 @@
                     <div>Section: {{ item.section }}</div>
                     {% endif %}
                     <a href="{{ item.url }}" class="btn-custom mt-auto">Read Full Article</a>
+                    <!-- Add this line for the Edit button -->
+                    <a href="{{ url_for('edit_item', id=item['id']) }}" class="btn-custom mt-auto">Edit</a>
                 </div>
             </div>
         </div>

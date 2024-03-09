@@ -1,6 +1,6 @@
 # Samuel Braun slb2250
 
-from flask import Flask
+from flask import Flask, redirect, url_for
 from flask import render_template
 from flask import Response, request, jsonify
 import nyt_helper as nyt
@@ -121,7 +121,7 @@ def add_item():
         new_article = {
             'id': global_id,
             'title': title,
-            'author': author,
+            'byline': f"By {author}",
             'date': date,
             'section': section,
             'url': url,
@@ -136,6 +136,41 @@ def add_item():
 
     # If it's a GET request, render the 'add_item.html' template
     return render_template('add_item.html')
+
+
+@app.route('/edit/<int:id>', methods=['GET', 'POST'])
+def edit_item(id):
+    global data  # Make sure we're modifying the global data variable
+    article = next((article for article in data if article['id'] == id), None)
+
+    if not article:
+        return "Item not found", 404
+
+    if request.method == 'POST':
+        title = request.form['title']
+        author = request.form['author']
+        date = request.form['date']
+        abstract = request.form.get('abstract', '')
+        image = request.form.get('image', '')
+
+        if not (title and author and date):
+            return jsonify({'error': 'Required fields are missing'}), 400
+
+        # Update the article directly in the data list
+        for i, art in enumerate(data):
+            if art['id'] == id:
+                data[i]['title'] = title
+                data[i]['byline'] = f"By {author}"
+                data[i]['published_date'] = date
+                data[i]['abstract'] = abstract
+                data[i]['image'] = image
+                break  # Stop iterating once we've found and updated the article
+
+        # Redirect to the view page after updating
+        return redirect(url_for('item', id=id))
+
+    # If it's a GET request, render the edit page with the article data
+    return render_template('edit_item.html', article=article)
 
 
 if __name__ == '__main__':
