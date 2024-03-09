@@ -95,7 +95,7 @@ def add_item():
         # Extract the form data
         title = request.form.get('title', '').strip()
         author = request.form.get('author', '').strip()
-        update_date = request.form.get('update_date', '').strip()
+        date = request.form.get('date', '').strip()
         url = request.form.get('url', '').strip()
         section = request.form.get('section', '').strip()
         subsection = request.form.get('subsection', '').strip()
@@ -108,8 +108,8 @@ def add_item():
             errors['title'] = 'Title is required.'
         if not author:
             errors['author'] = 'Author is required.'
-        if not update_date:
-            errors['update_date'] = 'Date is required.'
+        if not date:
+            errors['date'] = 'Date is required.'
         if not url:
             errors['url'] = 'URL is required.'
 
@@ -123,7 +123,8 @@ def add_item():
             'id': global_id,
             'title': title,
             'author': author,
-            'update_date': update_date,
+            'published_date': date,
+            'update_date': date,
             'section': section,
             'subsection': subsection,
             'url': url,
@@ -151,22 +152,23 @@ def edit_item(id):
     if request.method == 'POST':
         title = request.form['title']
         author = request.form['author']
-        date = request.form['date']
+        update_date = request.form['update_date']
         url = request.form['url']
         section = request.form['section']
         subsection = request.form['subsection']
         abstract = request.form.get('abstract', '')
         image = request.form.get('image', '')
 
-        if not (title and author and date):
+        if not (title and author and update_date):
             return jsonify({'error': 'Required fields are missing'}), 400
 
         # Update the article directly in the data list
         for i, art in enumerate(data):
             if art['id'] == id:
+
                 data[i]['title'] = title
                 data[i]['author'] = author
-                data[i]['published_date'] = date
+                data[i]['update_date'] = update_date
                 data[i]['url'] = url
                 data[i]['section'] = section
                 data[i]['subsection'] = subsection
