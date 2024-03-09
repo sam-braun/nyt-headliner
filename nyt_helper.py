@@ -49,7 +49,8 @@ def format_article_data(article_data):
             'keywords': keywords
         }
 
-        formatted_data.append(formatted_article)
+        if formatted_article["image"]:
+            formatted_data.append(formatted_article)
 
         for keyword in formatted_article['keywords']:
             if keyword not in all_keywords:

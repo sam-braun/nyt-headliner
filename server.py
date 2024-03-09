@@ -65,7 +65,8 @@ def homepage():
 
 @app.route('/api/featured_items')
 def featured_items():
-    featured = data[:3]
+    
+    featured = data[:6]
     return jsonify(featured)
 
 

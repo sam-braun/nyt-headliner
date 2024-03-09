@@ -1,38 +1,169 @@
-<!-- Samuel Braun slb2250 -->
-
 {% extends "layout.html" %}
 
 {% block content %}
+
+<style>
+    .custom-card {
+        /* Adjustments as per your image */
+        border-radius: 10px;
+        overflow: hidden;
+        /* Ensure the border-radius applies to child img */
+    }
+
+    .custom-card-img {
+        height: 100%;
+        /* Fixed height for consistency */
+        object-fit: cover;
+        /* Cover the area without stretching the image */
+    }
+
+    .custom-card-body {
+        /* Your image has a blue background */
+        color: #ffffff;
+        /* Text color */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        /* Space between title/date and button */
+        padding: 15px;
+        /* Padding as per your image */
+    }
+
+    .custom-card-title,
+    .custom-card-date {
+        margin: 0;
+        /* Remove default margins */
+    }
+
+    .custom-btn-learn-more {
+        background-color: #ffa500;
+        /* Orange color button */
+        border: none;
+        border-radius: 5px;
+        /* Slight rounding on the button edges */
+        color: #ffffff;
+    }
+
+    /* Responsive columns */
+    @media (max-width: 768px) {
+        .custom-card-img {
+            height: auto;
+            /* Adjust height on smaller screens */
+        }
+    }
+</style>
+
 <div class="container mt-4">
-    <h3 class="text-center">Popular Propaganda Artifacts</h3>
+    <h3 class="text-center">This Week's Most Popular Articles</h3>
     <div id="items-container" class="row">
+        <!-- Article cards will be inserted here by JavaScript -->
     </div>
 </div>
 
 <script>
+    function setAverageBackgroundColor(imageElement, containerElement) {
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        const img = new Image();
+
+        img.onload = function () {
+            let colorSum = { r: 0, g: 0, b: 0 };
+            let pixelCount = 0;
+            let imageData, data;
+
+            // Set canvas size to the image size
+            canvas.width = this.width;
+            canvas.height = this.height;
+            context.drawImage(this, 0, 0, this.width, this.height);
+
+            // Get image data
+            imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+            data = imageData.data;
+
+            // Sum up all pixel values
+            for (let i = 0; i < data.length; i += 4) {
+                colorSum.r += data[i];     // Red
+                colorSum.g += data[i + 1]; // Green
+                colorSum.b += data[i + 2]; // Blue
+                pixelCount++;
+            }
+
+            // Calculate average RGB
+            colorSum.r = Math.floor(colorSum.r / pixelCount);
+            colorSum.g = Math.floor(colorSum.g / pixelCount);
+            colorSum.b = Math.floor(colorSum.b / pixelCount);
+
+            // Set container background to average color
+            containerElement.style.backgroundColor = `rgb(${colorSum.r}, ${colorSum.g}, ${colorSum.b})`;
+        };
+
+        // Handle CORS security if the images are not served from the same domain
+        img.crossOrigin = 'Anonymous';
+
+        // Start loading the image
+        img.src = imageElement.src;
+    }
+
+
     document.addEventListener('DOMContentLoaded', function () {
         fetch('/api/featured_items')
             .then(response => response.json())
             .then(data => {
                 const itemsContainer = document.querySelector('#items-container');
-                const ul = document.createElement('ul');
-                ul.className = 'list-unstyled';
 
                 data.forEach(item => {
-                    const li = document.createElement('li');
-                    const itemLink = document.createElement('a');
-                    itemLink.href = `/view/${item.id}`;
-                    itemLink.innerText = item.title;
-                    li.appendChild(itemLink);
-                    ul.appendChild(li);
-                });
+                    const col = document.createElement('div');
+                    col.className = 'col-md-4 mb-4';
 
-                itemsContainer.innerHTML = '';
-                itemsContainer.appendChild(ul);
+                    const imge = document.createElement('img');
+                    imge.onload = function () {
+                        setPredominantBackgroundColor(imge, card); // Pass the image and its card container to the function
+                    };
+                    imge.src = item.image; // Set the source to start loading the image
+                    imge.alt = 'Article Image';
+
+                    const card = document.createElement('div');
+                    card.className = 'card custom-card h-100';
+
+                    const img = document.createElement('img');
+                    imge.className = 'card-img-top custom-card-img';
+                    imge.src = item.image; // Placeholder for the image source
+                    imge.alt = 'Article Image';
+
+                    const cardBody = document.createElement('div');
+                    cardBody.className = 'card-body custom-card-body';
+
+                    const title = document.createElement('h5');
+                    title.className = 'custom-card-title';
+                    title.textContent = item.title;
+
+                    const date = document.createElement('p');
+                    date.className = 'custom-card-date';
+                    date.textContent = item.published_date; // Placeholder for the published date
+
+                    const button = document.createElement('a');
+                    button.className = 'btn custom-btn-learn-more';
+                    button.href = `/view/${item.id}`;
+                    button.textContent = 'Learn More';
+
+                    cardBody.appendChild(title);
+                    cardBody.appendChild(date);
+                    cardBody.appendChild(button);
+
+                    card.appendChild(imge);
+                    card.appendChild(cardBody);
+
+                    col.appendChild(card);
+
+                    itemsContainer.appendChild(col);
+                });
             })
-            .catch(error => console.error('Error loading featured items:', error));
+            .catch(error => {
+                console.error('Error loading featured items:', error);
+                // Handle failure
+                itemsContainer.textContent = 'Failed to load featured items.';
+            });
     });
 </script>
-
 
 {% endblock %}
