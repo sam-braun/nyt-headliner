@@ -31,6 +31,8 @@ def format_article_data(article_data):
         # published_date = datetime.strptime(article['published_date'], "%Y-%m-%d").strftime("%B %d, %Y")
 
         keywords = process_keywords(article['adx_keywords'])
+        article['byline'] = article['byline'].replace('By ', '')
+        article['updated'] = article['updated'][:-9]
 
         formatted_article = {
             'url': article['url'],
@@ -39,7 +41,7 @@ def format_article_data(article_data):
             'section': article['section'],
             'subsection': article['subsection'],
             'adx_keywords': article['adx_keywords'],
-            'byline': article['byline'],
+            'author': article['byline'],
             'title': article['title'],
             'abstract': article['abstract'],
             'image': image_url,

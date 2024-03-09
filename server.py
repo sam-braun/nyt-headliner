@@ -95,9 +95,10 @@ def add_item():
         # Extract the form data
         title = request.form.get('title', '').strip()
         author = request.form.get('author', '').strip()
-        date = request.form.get('date', '').strip()
+        update_date = request.form.get('update_date', '').strip()
         url = request.form.get('url', '').strip()
         section = request.form.get('section', '').strip()
+        subsection = request.form.get('subsection', '').strip()
         abstract = request.form.get('abstract', '').strip()
         image = request.form.get('image', '').strip()
 
@@ -107,8 +108,8 @@ def add_item():
             errors['title'] = 'Title is required.'
         if not author:
             errors['author'] = 'Author is required.'
-        if not date:
-            errors['date'] = 'Date is required.'
+        if not update_date:
+            errors['update_date'] = 'Date is required.'
         if not url:
             errors['url'] = 'URL is required.'
 
@@ -121,9 +122,10 @@ def add_item():
         new_article = {
             'id': global_id,
             'title': title,
-            'byline': f"By {author}",
-            'date': date,
+            'author': author,
+            'update_date': update_date,
             'section': section,
+            'subsection': subsection,
             'url': url,
             'abstract': abstract,
             'image': image
@@ -150,6 +152,9 @@ def edit_item(id):
         title = request.form['title']
         author = request.form['author']
         date = request.form['date']
+        url = request.form['url']
+        section = request.form['section']
+        subsection = request.form['subsection']
         abstract = request.form.get('abstract', '')
         image = request.form.get('image', '')
 
@@ -160,8 +165,11 @@ def edit_item(id):
         for i, art in enumerate(data):
             if art['id'] == id:
                 data[i]['title'] = title
-                data[i]['byline'] = f"By {author}"
+                data[i]['author'] = author
                 data[i]['published_date'] = date
+                data[i]['url'] = url
+                data[i]['section'] = section
+                data[i]['subsection'] = subsection
                 data[i]['abstract'] = abstract
                 data[i]['image'] = image
                 break  # Stop iterating once we've found and updated the article
