@@ -1,5 +1,3 @@
-# Samuel Braun slb2250
-
 import random
 from flask import Flask, redirect, url_for
 from flask import render_template
@@ -15,7 +13,7 @@ global_id = 100
 
 
 def get_nyt_data():
-    api_key = "AjqDOaTFAm1qxTherm3JbH3djF3cIUlg"
+    api_key = "your_api_key"
     request_url = f"https://api.nytimes.com/svc/mostpopular/v2/viewed/7.json?api-key={api_key}"
     global data, all_keywords
     data, all_keywords = nyt.get_nyt_data(request_url)

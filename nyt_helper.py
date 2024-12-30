@@ -1,5 +1,3 @@
-# Samuel Braun slb2250
-
 import requests
 from datetime import datetime
 
